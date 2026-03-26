@@ -1,0 +1,13 @@
+train: ../train/images
+val: ../valid/images
+test: ../test/images
+
+nc: 2
+names: ['No Tumor', 'Tumor']
+
+roboflow:
+  workspace: ssthiyasowmi
+  project: brain-tumor-detection-bmmqz-iecvu
+  version: 1
+  license: CC BY 4.0
+  url: https://universe.roboflow.com/ssthiyasowmi/brain-tumor-detection-bmmqz-iecvu/dataset/1

@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block content %}
+<style>
+  body {
+    background: url("{{ url_for('static', filename='img.jpg') }}") no-repeat center center fixed;
+    background-size: cover;
+  }
+</style>
+
+  <!-- Brain animation background -->
+  <div class="brain-shape-container">
+    <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+      <path d="M32 2C15.4 2 2 15.4 2 32s13.4 30 30 30 30-13.4 30-30S48.6 2 32 2zm0 56C17.7 58 6 46.3 6 32S17.7 6 32 6s26 11.7 26 26-11.7 26-26 26z"/>
+      <path d="M43 20c-2.2 0-4 1.8-4 4 0 .7.2 1.3.5 1.9-1.4.5-2.5 1.6-3.1 2.9-.3-.1-.6-.1-.9-.1-2.2 0-4 1.8-4 4 0 .4.1.8.2 1.1-2.4.6-4.2 2.7-4.2 5.2 0 3 2.4 5.4 5.4 5.4 1.7 0 3.2-.8 4.3-2 .7 1.7 2.4 3 4.4 3 2.5 0 4.5-2 4.5-4.5 0-.5-.1-.9-.2-1.4 1.6-1.2 2.6-3.1 2.6-5.1 0-3.5-2.9-6.4-6.4-6.4-.3 0-.7 0-1 .1-.1-.2-.1-.4-.1-.6 0-1.1.9-2 2-2s2 .9 2 2h2c0-2.2-1.8-4-4-4z"/>
+    </svg>
+  </div>
+
+  <h1>RASPBERRY PI–BASED BRAIN TUMOR DETECTION USING BRAIN MRI AND CT SCAN IMAGES AND DEEP LEARNING.
+</h1>
+<p>
+  Build a real-time brain tumor detection system using Raspberry Pi and deep learning.</p>
+
+
+
+  {% if session.get('user') %}
+    <h2>Upload Brain Image for Analysis</h2>
+    <form action="{{ url_for('predict') }}" method="POST" enctype="multipart/form-data">
+      <label for="image">Select Image:</label><br><br>
+      <input type="file" name="image" accept="image/*" required><br><br><br>
+      <input type="submit" value="Predict"><br><br><br>
+    </form>
+  {% endif %}
+{% endblock %}

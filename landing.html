@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Welcome to YOLO App</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+  <!-- Solar background -->
+  <div class="solar-bg">
+    <div class="sun"></div>
+  </div>
+
+  <div class="landing-container">
+    <nav>
+      <a href="{{ url_for('login') }}">Login</a>
+      <a href="{{ url_for('signup') }}">Sign Up</a>
+      <button id="toggleMode" class="toggle-btn">Toggle Mode</button>
+    </nav>
+    <h1>Moon Mapped: A Human-Centered Deep Learning Journey to Uncover Lunar Craters </h1>
+    <p>"Moon Mapped" is a project that harnesses deep learning to automatically detect and map lunar craters from images of the Moon. It takes a human-centered approach by integrating expert feedback with AI predictions to improve accuracy and usability, ensuring that the crater detection process is both innovative and reliable.</p>
+    <a href="{{ url_for('app_page') }}" class="btn">Get Started</a>
+  </div>
+
+  <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>

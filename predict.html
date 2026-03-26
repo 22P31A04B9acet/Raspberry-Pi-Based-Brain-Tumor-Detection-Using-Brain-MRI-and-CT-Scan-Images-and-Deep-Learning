@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block content %}
+<style>
+  body {
+    background: url("{{ url_for('static', filename='img3.jpg') }}") no-repeat center center fixed;
+    background-size: cover;
+  }
+
+  .prediction-container {
+    text-align: center;
+    margin-top: 40px;
+  }
+
+  .result-image {
+    width: 450px;
+    height: 450px;
+    object-fit: contain;   /* keeps aspect ratio */
+    border: 4px solid #fff;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0,0,0,0.4);
+    background: #fff;
+  }
+
+  .back-link {
+    display: inline-block;
+    margin-top: 20px;
+    font-size: 18px;
+  }
+</style>
+
+<div class="prediction-container">
+  <h2>Prediction Result</h2>
+
+  <img src="{{ result_image }}" alt="Prediction Result" class="result-image">
+
+  <div class="back-link">
+    <a href="{{ url_for('index') }}">Back to Home</a>
+  </div>
+</div>
+{% endblock %}

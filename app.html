@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Moon Mapped: A Human-Centered Deep Learning Journey to Uncover Lunar Craters </title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+  <!-- Solar background -->
+  <div class="solar-bg">
+    <div class="sun"></div>
+  </div>
+
+  <div class="container">
+    <nav>
+      {% if session.get('username') %}
+        <span>Welcome, {{ session.username }}!</span>
+        <a href="{{ url_for('logout') }}">Logout</a>
+      {% else %}
+        <a href="{{ url_for('login') }}">Login</a>
+        <a href="{{ url_for('signup') }}">Sign Up</a>
+      {% endif %}
+      <a href="{{ url_for('landing') }}">Landing Page</a>
+      <button id="toggleMode" class="toggle-btn">Toggle Mode</button>
+    </nav>
+    <h1>Moon Mapped: A Human-Centered Deep Learning Journey to Uncover Lunar Craters </h1>
+
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <ul class="flashes">
+          {% for msg in messages %}
+            <li>{{ msg }}</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
+
+    <form id="uploadForm" action="/app" method="POST" enctype="multipart/form-data">
+      <input type="file" name="image" id="imageInput" accept="image/*" required>
+      <button type="submit">Upload and Detect</button>
+    </form>
+
+    {% if result_image %}
+      <div class="result">
+        <h2>Detection Result:</h2>
+        <img src="{{ url_for('static', filename=result_image) }}" alt="Result Image">
+      </div>
+    {% endif %}
+  </div>
+  <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
