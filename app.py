@@ -113,7 +113,6 @@ def logout():
     flash('Logged out successfully.', 'success')
     return redirect(url_for('index'))
 
-
 @app.route('/predict', methods=['POST'])
 def predict():
     if 'image' not in request.files:
@@ -121,6 +120,7 @@ def predict():
         return redirect(url_for('index'))
 
     file = request.files['image']
+
     if file.filename == '':
         flash('No selected file', 'error')
         return redirect(url_for('index'))
@@ -128,45 +128,55 @@ def predict():
     # Save uploaded image
     upload_folder = os.path.join(app.root_path, 'uploads')
     os.makedirs(upload_folder, exist_ok=True)
+
     file_path = os.path.join(upload_folder, file.filename)
     file.save(file_path)
 
-    # Simulated federated step (for project concept only)
+    # Federated Learning (dummy)
     aggregated_model = federated_average([model, model, model])
 
-    # Predict
+    # Prediction
     results = aggregated_model(file_path)
     img = cv2.imread(file_path)
+
+    tumor_found = False
 
     for box in results[0].boxes:
         cls_id = int(box.cls.item())
         confidence = float(box.conf.item())
         x1, y1, x2, y2 = map(int, box.xyxy.cpu().numpy().flatten())
 
-        # Correct class mapping
         if cls_id == 1:
+            tumor_found = True
             label = f"Brain Tumor {confidence:.2f}"
-            color = (0, 0, 255)  # Red
-        else:
-            label = f"No Brain Tumor {confidence:.2f}"
-            color = (0, 255, 0)  # Green
+            color = (0, 0, 255)
 
-        cv2.rectangle(img, (x1, y1), (x2, y2), color, 2)
-        cv2.putText(img, label, (x1, y1 - 10),
-                    cv2.FONT_HERSHEY_SIMPLEX, 0.3, color, 1)
+            cv2.rectangle(img, (x1, y1), (x2, y2), color, 2)
+            cv2.putText(img, label, (x1, y1 - 10),
+                        cv2.FONT_HERSHEY_SIMPLEX, 0.5, color, 1)
 
-    # Save result image
+    if not tumor_found:
+        h, w, _ = img.shape
+        label = "No Brain Tumor"
+        color = (0, 255, 0)
+
+        cv2.rectangle(img, (0, 0), (w, h), color, 2)
+        cv2.putText(img, label, (20, 30),
+                    cv2.FONT_HERSHEY_SIMPLEX, 0.7, color, 2)
+
+    # Save result
     result_folder = os.path.join(app.root_path, 'static', 'results')
     os.makedirs(result_folder, exist_ok=True)
+
     result_filename = "result_" + file.filename
     result_path = os.path.join(result_folder, result_filename)
+
     cv2.imwrite(result_path, img)
 
     return render_template(
         'predict.html',
         result_image=url_for('static', filename='results/' + result_filename)
-    )
-
+        )
 
 if __name__ == '__main__':
     app.run(debug=True)
